@@ -1,0 +1,40 @@
+services:
+  # nginx reverse proxy with SSL
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./conf.d/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./conf.d/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - jupyter-lab
+    restart: unless-stopped
+    networks:
+      web-net:
+        ipv4_address: 172.18.0.2
+
+  # JupyterLab service
+  jupyter-lab:
+    image: jupyter/base-notebook
+    container_name: jupyter-lab
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=jupyter123
+    volumes:
+      - ./data/jupyter:/home/jovyan/work
+    restart: unless-stopped
+    networks:
+      web-net:
+        ipv4_address: 172.18.0.3
+
+networks:
+  web-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
