@@ -1,0 +1,2 @@
+# SSL certificates
+conf.d/nginx/ssl/
