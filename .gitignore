@@ -1,2 +1,9 @@
 # SSL certificates
 conf.d/nginx/ssl/
+
+# Data directory
+data/
+
+# Config directories
+conf.d/vscode
+!conf.d/vscode/config.yaml

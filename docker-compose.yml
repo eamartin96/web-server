@@ -10,6 +10,7 @@ services:
       - ./conf.d/nginx/ssl:/etc/nginx/ssl
     depends_on:
       - jupyter-lab
+      - vscode-server
     restart: unless-stopped
     networks:
       web-net:
@@ -25,6 +26,20 @@ services:
     restart: unless-stopped
     networks:
       web-net:
+
+  vscode-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: vscode-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./conf.d/vscode:/config
+      - ./data/vscode:/config/workspace
+    restart: unless-stopped
+    networks:
+      - web-net
 
 networks:
   web-net:
