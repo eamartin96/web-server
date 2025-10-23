@@ -1,5 +1,4 @@
 services:
-  # nginx reverse proxy with SSL
   nginx-proxy:
     image: nginx:alpine
     container_name: nginx-proxy
@@ -14,14 +13,10 @@ services:
     restart: unless-stopped
     networks:
       web-net:
-        ipv4_address: 172.18.0.2
 
-  # JupyterLab service
   jupyter-lab:
     image: jupyter/base-notebook
     container_name: jupyter-lab
-    ports:
-      - "8888:8888"
     environment:
       - JUPYTER_ENABLE_LAB=yes
       - JUPYTER_TOKEN=jupyter123
@@ -30,11 +25,7 @@ services:
     restart: unless-stopped
     networks:
       web-net:
-        ipv4_address: 172.18.0.3
 
 networks:
   web-net:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.18.0.0/16
